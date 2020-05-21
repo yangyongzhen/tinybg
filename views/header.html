@@ -1,0 +1,32 @@
+{{define "header"}} {{/* header.html 它是页面的嵌入模板 */}}
+<head>
+<meta charset="UTF8">
+<title>个人博客</title>
+<meta name="keywords" content="个人博客,博客模板,css3,html5,网站模板" />
+<meta name="description" content="这是一个有关黑色时间轴的css3 html5 网站模板" />
+<link href="/assets/css/styles.css" rel="stylesheet">
+<link href="/assets/css/animation.css" rel="stylesheet">
+<link href="/assets/css/view.css" rel="stylesheet">
+<!-- 返回顶部调用 begin -->
+<link href="/assets/css/lrtk.css" rel="stylesheet" />
+<script type="text/javascript" src="/assets/js/jquery.js"></script>
+<script type="text/javascript" src="/assets/js/js.js"></script>
+<!-- 返回顶部调用 end-->
+<!--[if lt IE 9]>
+<script src="js/modernizr.js"></script>
+<![endif]-->
+</head>
+<header>
+  <nav id="nav">
+    <ul>
+      <li><a href="/" >首页</a></li>
+      <li><a href="/#" target="_blank" title="慢生活">慢生活</a></li>
+      <li><a href="/#" target="_blank" title="碎言碎语">碎言碎语</a></li>
+      <li><a href="/#" target="_blank" title="碎言碎语">关于</a></li>
+    </ul>
+    <script src="/assets/js/silder.js"></script><!--获取当前页导航 高亮显示标题--> 
+  </nav>
+</header>
+<!--header end-->
+
+{{end}} {{/*  {{ 嵌入模板定义格式：define "嵌入模板名称"}} {{end}}  */}}

@@ -1,0 +1,54 @@
+package main
+
+import (
+	"fmt"
+	"html/template"
+	"io/ioutil"
+	"net/http"
+	"path/filepath"
+	"strings"
+
+	"github.com/russross/blackfriday"
+)
+
+type Post struct {
+	Title   string
+	Date    string
+	Summary string
+	Content template.HTML
+	File    string
+}
+
+func handlerequest(w http.ResponseWriter, r *http.Request) {
+	posts := getPosts()
+	t := template.New("index.html")
+	t, _ = t.ParseFiles("index.html")
+	t.Execute(w, posts)
+}
+
+func getPosts() []Post {
+	a := []Post{}
+	files, _ := filepath.Glob("posts/*")
+	for _, f := range files {
+		file := strings.Replace(f, "posts/", "", -1)
+		file = strings.Replace(file, ".md", "", -1)
+		fileread, _ := ioutil.ReadFile(f)
+		lines := strings.Split(string(fileread), "\n")
+		title := string(lines[0])
+		date := string(lines[1])
+		summary := string(lines[2])
+		body := strings.Join(lines[3:len(lines)], "\n")
+		//fmt.Println(body)
+		//body = string(blackfriday.MarkdownCommon([]byte(body)))
+		//fmt.Println(body)
+		content := template.HTML(blackfriday.Run([]byte(body)))
+		fmt.Println(content)
+		a = append(a, Post{title, date, summary, content, file})
+	}
+	return a
+}
+
+func main() {
+	http.HandleFunc("/", handlerequest)
+	http.ListenAndServe(":8000", nil)
+}

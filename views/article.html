@@ -1,0 +1,310 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8"/>
+    <title>view-个人博客</title>
+	<meta name="keywords" content="个人网站模板,个人博客,博客模板,css3,html5,网站" />
+	<meta name="description" content="杨永贞的个人博客" />
+	<link href="/assets/css/styles.css" rel="stylesheet">
+	<link href="/assets/css/view.css" rel="stylesheet">
+	<link href="/assets/css/mytable.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.0.0/styles/railscasts.min.css" rel="stylesheet">
+	<!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.0.0/styles/atom-one-dark.min.css"> -->
+	<script src="https://cdn.bootcss.com/jquery/3.5.0/jquery.min.js"></script>
+	<script src="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@10.0.0/build/highlight.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/markdown-it/10.0.0/markdown-it.min.js"></script>
+
+	<!-- 返回顶部调用 begin -->
+	<link href="/assets/css/lrtk.css" rel="stylesheet" />
+	<script type="text/javascript" src="/assets/js/jquery.js"></script>
+	<script type="text/javascript" src="/assets/js/js.js"></script>
+</head>
+<header>
+	<nav id="nav">
+	  <ul>
+		<li><a href="/" >首页</a></li>
+		<li><a href="/news/" target="_blank" title="慢生活">慢生活</a></li>
+		<li><a href="/newstalk/" target="_blank" title="碎言碎语">碎言碎语</a></li>
+		<li><a href="/newstalk/" target="_blank" title="碎言碎语">关于</a></li>
+	  </ul>
+	  <script src="/assets/js/silder.js"></script><!--获取当前页导航 高亮显示标题--> 
+	</nav>
+  </header>
+  <!--header end-->
+<body>
+<div id="mainbody">
+	<div class="blogs">
+	  <div id="index_view">
+		<h2 class="t_nav"><a href="/">首页</a><a href="/">{{.post.Item}}</a></h2>
+		<h1 id="titiles" class="c_titile">{{.post.Title}}</h1>
+		<p class="box">发布时间：{{.post.Date}}<span>编辑：{{.post.Author}}</span>阅读（{{.post.VistCnt}}）</p>
+		<ul>
+			<div class="md_render">
+			</div>
+		</ul>
+		<div class="share"> 
+			<div id="share_button" class="social-share" style="float:right;padding-right:2em;padding-top:1em;"></div>
+			<div id="share_button_proto" style="display:none;">
+				<a class="bshareDiv" href="http://www.bshare.cn/share">分享按钮</a>
+				<script type="text/javascript" charset="utf-8" src="http://static.bshare.cn/b/buttonLite.js#uuid=15e016b4-0028-44f1-a40d-a3c9d9c13c28&style=10&bgcolor=#fff&bp=weixin,qqim,qzone,qqmb,sinaminiblog,fanfou,xueqiu,douban,facebook,twitter,gplus,instapaper&ssc=false"></script>
+				<script type="text/javascript" charset="utf-8">
+				bShare.addEntry({
+					title: document.getElementById("titiles").innerHTML,
+				url:window.location.href
+				});
+				</script>
+			</div>
+			<script>
+			document.getElementById("share_button").innerHTML=document.getElementById("share_button_proto").innerHTML;
+			</script>
+		</div>
+		<div id="alpha">
+			<div class="asset-foot">
+				<h3 style="display: block;margin-block-start: 1em;margin-block-end: 1em;">文档信息</h3>
+				<ul>
+				<li style="list-style-type: disc;">版权声明：自由转载-非商用-非衍生-保持署名（<a href="http://creativecommons.org/licenses/by-nc-nd/3.0/deed.zh">创意共享3.0许可证</a>）</li>
+				<li style="list-style-type: disc;">发表日期： <abbr class="published" title="">{{.post.Date}}</abbr></li>
+				</ul>
+			</div>
+			<div style="display: inline-block ! important;width: 100%;">
+			</div>
+			<div id="comments" class="comments">
+				<h2 class="comments-header">留言（{{.cmtcounts}}条）</h2>
+				<div id="comments-content" class="comments-content" style="clear: left;">
+					{{range $i,$v := .post.Cmts}}
+					<div id="comment-{{$i}}" class="comment">
+						<div  class="inner">
+							<div class="comment-header">
+								<div class="asset-meta">
+								<p><span class="byline">
+									<span class="vcard author">
+										{{if eq $v.URL ""}}
+										{{$v.User}}
+										{{else}}
+										<a title="{{$v.URL}}" href="http://{{$v.URL}}" target="_blank" rel="nofollow">{{$v.User}}</a>
+										{{end}}
+									</span>说：</span></p>
+							   </div>
+							</div>
+							<div class="comment-content" id="comment-quote-{{$i}}">   
+								{{$v.Text}}
+							</div>
+							<div class="comment-footer">
+								<div class="comment-footer-inner">
+									<p>
+									<abbr class="published" title="{{$v.Title}}">{{$v.Times}}</abbr>
+									| <a href="/article/{{$v.ID}}">#</a>
+									| <a href="#comment-text" title="引用{{$v.User}}的这条留言" onclick="return CommentQuote('comment-quote-{{$i}}','{{$v.User}}');">引用</a>
+									</p>
+								</div>
+							</div>
+						</div>
+					</div>
+					{{end}}
+				</div>
+				<div class="comments-open" id="comments-open">
+					<h2 class="comments-open-header">我要发表看法</h2>
+					<div class="comments-open-content">
+						<div id="comment-greeting"></div>
+			
+						<form method="post" action="/comment" name="comments_form" id="comments-form" onsubmit="return pleaseWait();">
+							<input type="hidden" name="id" value={{.post.ID}} />
+							<input type="hidden" name="item" value={{.post.Item}} />
+							<input type="hidden" name="title" value={{.post.Title}} />
+							<div id="comments-open-data">
+						<div id="comments-open-text">
+								<p><label for="comment-text">您的留言
+								（HTML标签部分可用）</label></p>
+								<p><textarea id="comment-text" name="text" rows="10" cols="50"></textarea></p>
+							</div>
+								<div id="comment-form-name">
+									<p><label for="comment-author">您的大名：</label></p>
+									<p><input id="comment-author" name="author" size="30" value="" />  <span class="hint"> &laquo;-必填</span></p>
+								</div>
+								<div id="comment-form-email">
+									<p><label for="comment-email">电子邮件：</label></p>
+									<p><input id="comment-email" name="email" size="30" value="" />  <span class="hint"> &laquo;-必填，不公开</span></p>
+								</div>
+								<div id="comment-form-url">
+									<p><label for="comment-url">个人网址：</label></p>
+									<p><input id="comment-url" name="url" size="30" value="" />  <span class="hint"> &laquo;-选填</span></p>
+								</div>
+							</div>
+							
+							<div id="comments-open-captcha"></div>
+							<div id="comments-open-footer">
+							<div id="wait" style="display:none;">
+							<p><strong>正在发表您的评论，请稍候</strong></p>
+							<p>
+							<input type="text" name="percent" size="3" style="font-family:Arial; color:black;text-align:center; border-width:medium; border-style:none;">           
+							<input type="text" name="chart" size="46" style="font-family:Arial;font-weight:bolder; color:black; padding:0px; border-style:none;">
+							</p>
+							</div>
+			
+								<p><input type="submit" accesskey="s" name="post" id="comment-submit" value="发表" />  <span class="hint"> &laquo;- 点击按钮</span></p>
+							</div>
+						</form>
+					</div>
+				</div>
+			</div>
+	   </div>
+	
+	  </div>
+	  <!--bloglist end-->
+	  <aside>
+		<div class="search">
+		  <form class="searchform" method="get" action="#">
+			<input type="text" name="s" value="Search" onfocus="this.value=''" onblur="this.value='Search'">
+		  </form>
+		</div>
+		<div class="sunnav">
+		  <ul>
+			{{range $i,$v := .items}}
+			<li><a href="/items/{{$i}}" title="{{$v}}">{{$v}}</a></li>
+			{{end}}
+		  </ul>
+		</div>
+		<div class="tuijian">
+			<h2>最新文章</h2>
+			<ol>
+			  {{range $i,$v := .newart}}
+			  <li><span><strong>{{add $i 1}}</strong></span><a href="/article/{{$v.ID}}">{{$v.Title}}</a></li>
+			  {{end}}
+			</ol>
+		</div>
+		<div class="clicks">
+		<h2>热门点击</h2>
+		<ol>
+			{{range $i,$v := .hotart}}
+			<li><span><a href="/">{{$v.Item}}</a></span><a href="/article/{{$v.ID}}">{{$v.Title}}</a></li>
+			{{end}}
+		</ol>
+		</div>
+	  </aside>
+	<!--blogs end--> 
+    </div>
+  <!--mainbody end-->
+  <!--mainbody end-->
+  {{template "footer" .}} 
+  <!-- 代码结束 -->
+  <script>
+	var md;
+	var defaults = {
+	  html: false, // Enable HTML tags in source
+	  xhtmlOut: false, // Use '/' to close single tags (<br />)
+	  breaks: false, // Convert '\n' in paragraphs into <br>
+	  langPrefix: 'language-', // CSS language prefix for fenced blocks
+	  linkify: true, // autoconvert URL-like texts to links
+	  typographer: true, // Enable smartypants and other sweet transforms
+	  // options below are for demo only
+	  _highlight: true,
+	  _strict: false,
+	  _view: 'html' // html / src / debug
+	};
+	defaults.highlight = function (str, lang) {
+	  var esc = md.utils.escapeHtml;
+	 
+	  if (lang && hljs.getLanguage(lang)) {
+		try {
+		  return '<pre class="hljs"><code>' +
+				 hljs.highlight(lang, str, true).value +
+				 '</code></pre>';
+		} catch (__) {}
+	  }
+	  return '<pre class="hljs"><code>' + esc(str) + '</code></pre>';
+	};
+	md = window.markdownit(defaults);
+    $('.md_render').html(md.render("{{.post.Body}}"));
+
+
+	function stick_count(){
+            bar= bar+2;
+            amount =amount + line;
+            document.forms["comments_form"].chart.value=amount;
+            document.forms["comments_form"].percent.value=bar+"%";
+            if (bar<99)
+            {setTimeout("stick_count()",200);}
+            else
+            {}
+    }
+	function pleaseWait() {
+	if(document.getElementById('comment-text').value.length>1200){
+	alert('留言请勿超过1200字！');
+	return false;
+	}
+	if(!document.forms["comments_form"].author.value){
+	alert('请填写“您的大名”！');
+	return false;
+	}
+
+	if(document.forms["comments_form"].email.value.length<7 || document.forms["comments_form"].email.value.indexOf("@")==-1){
+	alert('请正确填写电子邮件地址！');
+	return false;
+	}
+
+	if(document.getElementById('comment-text').value.length<2){
+	alert('留言不得为空！');
+	return false;
+	}
+	
+	document.forms["comments_form"].url.value = removeUrlPrefix(document.forms["comments_form"].url.value)
+	console.log(document.forms["comments_form"].url.value);
+	//alert(document.forms["comments_form"].url.value);
+	document.getElementById("comment-submit").style.visibility="hidden";
+	document.getElementById("wait").style.display="block";
+	stick_count();
+	if (document.forms["comments_form"].armor){
+		document.forms["comments_form"].armor.value = '493b793496197fb44387464d8c8c8cb4091a0b94';
+	}
+	return true;
+	}
+
+	
+	function ignoreSpaces(string) {
+	var temp = "";
+	string = '' + string;
+	splitstring = string.split("  "); //双引号之间是个空格；
+	for(i = 0; i < splitstring.length; i++)
+	temp += splitstring[i];
+	return temp;
+	}
+
+	function RemoveBlockquote(strText){
+		var regEx = /<blockquote>(.|\n|\r)*<\/blockquote>/ig;
+		regEx.multiline=true;
+		return strText.replace(regEx, "");
+	}
+
+	function RemoveHTML(strText){
+		var regEx = /<[^>]*>/g;
+		return strText.replace(regEx, "");
+	}
+
+	function removeUrlPrefix(a){
+		// a=a.replace(/：/g,":").replace(/．/g,".").replace(/／/g,"/");
+		// while(trim(a).toLowerCase().indexOf("http://")==0){
+		// 	a=trim(a.replace(/http:\/\//i,""));
+		// }
+		// while(trim(a).toLowerCase().indexOf("https://")==0){
+		// 	a=trim(a.replace(/https:\/\//i,""));
+		// }
+		if(trim(a).indexOf("http://")==0){
+			a = a.replace('http://','');
+		}
+		//a = a.replace(/^http:\/\/[^/]+/, "");
+		return a;
+	}
+	
+	function CommentQuote(v,f) {
+
+		window.location.href=window.location.href+"#comment-text";
+		string=document.forms["comments_form"].text.value;
+		string2=ignoreSpaces(RemoveHTML(RemoveBlockquote(document.getElementById(v).innerHTML)));
+		//document.forms["comments_form"].text.value="<blockquote>\n<pre>引用"+f+"的发言：</pre>\n"+string2+"\n</blockquote>\n\n"+string;
+		document.forms["comments_form"].text.value="引用"+f+"的发言\n"+string2+"\n"+string;
+		return true;
+	}
+	
+  </script>
+  </body>
+</html>

@@ -1,0 +1,46 @@
+{{define "footer"}} {{/* footer.html 它是页面的嵌入模板 */}}
+<footer>
+  <div class="footer-mid">
+    <div class="links">
+      <h2>友情链接</h2>
+      <ul>
+        <li><a href="/">杨青个人博客</a></li>
+        <li><a href="http://www.3dst.com">3DST技术服务中心</a></li>
+      </ul>
+    </div>
+    <div class="visitors">
+      <h2>最新评论</h2>
+		{{range $i,$v := .newcmts}}
+		<dl>
+		  <dt><img src="/assets/images/s{{$i}}.jpg">
+		  <dt>
+		  <dd>{{$v.User}}
+			<time>{{$v.Times}}</time>
+		  </dd>
+		  <dd>在 <a href="/article/{{$v.ID}}" class="title">{{$v.Title}}</a>中评论：</dd>
+		  <dd>{{$v.Text}}</dd>
+		</dl>
+		{{end}}
+    </div>
+    <section class="flickr">
+      <h2>摄影作品</h2>
+      <ul>
+        <li><a href="/"><img src="/assets/images/01.jpg"></a></li>
+        <li><a href="/"><img src="/assets/images/02.jpg"></a></li>
+        <li><a href="/"><img src="/assets/images/03.jpg"></a></li>
+        <li><a href="/"><img src="/assets/images/04.jpg"></a></li>
+        <li><a href="/"><img src="/assets/images/05.jpg"></a></li>
+        <li><a href="/"><img src="/assets/images/06.jpg"></a></li>
+        <li><a href="/"><img src="/assets/images/07.jpg"></a></li>
+        <li><a href="/"><img src="/assets/images/08.jpg"></a></li>
+        <li><a href="/"><img src="/assets/images/09.jpg"></a></li>
+      </ul>
+    </section>
+  </div>
+  <div class="footer-bottom">
+    <p>访问:{{.vistcnt}} Copyright 2020 Design by <a href="http://blog.csdn.net/yyz_1987" target="_blank">特立独行的猫米 </a>Powerd by Golang GinWeb</p>
+  </div>
+</footer>
+<!-- jQuery仿腾讯回顶部和建议 代码开始 -->
+<div id="tbox"> <a id="togbook" href="/e/tool/gbook/?bid=1"></a> <a id="gotop" href="javascript:void(0)"></a> </div>
+{{end}} {{/*? {{ 嵌入模板定义格式：define "嵌入模板名称"}} {{end}}? */}}

@@ -1,0 +1,154 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+   <meta charset="utf-8"/>
+  <title>markdown in the browser</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.0.0/styles/railscasts.min.css">
+  <link rel="stylesheet" href="./mytable.css">
+  <!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.0.0/styles/atom-one-dark.min.css"> -->
+  <script src="https://cdn.bootcss.com/jquery/3.5.0/jquery.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@10.0.0/build/highlight.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/markdown-it/10.0.0/markdown-it.min.js"></script>
+  <script src="https://cdn.bootcss.com/mermaid/8.0.0-rc.8/mermaid.min.js"></script>
+  <style>
+  .md_source{
+    display: none
+  }
+  </style>
+</head>
+<body>
+<pre class="md_source">
+# Welcome to Yang's Blog!	
+this is a most simple demo, used markdown-it and highlight.js in the browser to rendering markdown files
+## used markdown-it in the browser
+
+> 你好！ 这是你第一次使用 **Markdown编辑器** 所展示的欢迎页。如果你想学习如何使用Markdown编辑器。  
+
+可以仔细阅读这篇文章，了解一下Markdown的基本语法知识。
+***
+Rendered by **markdown-it**.
+### 表格demo,欢迎使用Markdown
+Name    | Age
+--------|------
+Bob     | 27
+Alice   | 23
+
+### 代码高亮例子
+```golang
+package main
+import "fmt"
+
+func main() {
+	fmt.Println("hello ")
+}
+
+```
+
+# 一级标题
+ 
+## 二级标题
+ 
+### 三级标题
+ 
+		
+### 表格例子 欢迎使用Markdown
+| Command | Description |
+| --- | --- |
+| `git status` | List all *new or modified* files |
+| `git diff` | Show file differences that **haven't been** staged |		
+
+### 链接
+[baidu](https://baidu.com)
+
+
+### 插入图片
+![imgs](https://img-blog.csdnimg.cn/2019091813595558.png)
+
+- 项目
+  - 项目
+	- 项目
+	
+- 列表信息
+	+ 二级列表
+		* 三级列表	
+
+1. 项目1
+2. 项目2
+3. 项目3
+
+- [ ] 计划任务
+- [x] 完成任务
+
+创建脚注格式类似这样 [^RUNOOB]
+
+> 最外层
+> > 第一层嵌套
+> > > 第二层嵌套
+
+
+```mermaid
+graph LR
+	A --- B
+	B-->C[fa:fa-ban forbidden]
+	B-->D(fa:fa-spinner);
+```
+</pre>
+
+<div class="mermaid">
+	graph LR
+		A --- B
+		B-->C[fa:fa-ban forbidden]
+		B-->D(fa:fa-spinner);
+	</div>
+
+<div class="md_render">
+</div>
+  <script>
+	var md;
+	var defaults = {
+	  html: false, // Enable HTML tags in source
+	  xhtmlOut: false, // Use '/' to close single tags (<br />)
+	  breaks: false, // Convert '\n' in paragraphs into <br>
+	  langPrefix: 'language-', // CSS language prefix for fenced blocks
+	  linkify: true, // autoconvert URL-like texts to links
+	  typographer: true, // Enable smartypants and other sweet transforms
+	  // options below are for demo only
+	  _highlight: true,
+	  _strict: false,
+	  _view: 'html' // html / src / debug
+	};
+	const mermaidChart = (code) => {
+	try {
+		mermaid.parse(code)
+		return `<div class="mermaid">${code}</div>`
+	} catch ({ str, hash }) {
+		return `<pre>${str}</pre>`
+	}
+	}
+
+	defaults.highlight = function (str, lang) {
+	  var esc = md.utils.escapeHtml;
+	  console.log(str)
+	  console.log(lang)
+	  if (lang && hljs.getLanguage(lang)) {
+		try {
+		  return '<pre class="hljs"><code>' +
+				 hljs.highlight(lang, str, true).value +
+				 '</code></pre>';
+		} catch (__) {}
+	  }else if(lang == 'mermaid'){
+		return mermaidChart(str)
+		//return '<pre class="mermaid">' + mermaid.mermaidAPI.render('mermaid', str) + '</pre>';
+	  }else{
+		return '<pre class="hljs"><code>' + esc(str) + '</code></pre>';
+	  }
+	  
+	};
+
+	
+	md = window.markdownit(defaults);
+	$('.md_render').html(md.render($('.md_source').html()));
+	mermaid.initialize({startOnLoad:true});
+  </script>
+  </body>
+</html>

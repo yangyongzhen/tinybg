@@ -1,7 +1,8 @@
-# tinybg
+# goblog
 
 #### Description
-{**When you're done, you can delete the content in this README and update the file with details for others getting started with your repository**}
+使用go语言做的个人markdown博客。
+预览地址：http://121.36.253.86/
 
 #### Software Architecture
 Software architecture description

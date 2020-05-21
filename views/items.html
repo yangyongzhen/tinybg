@@ -1,0 +1,109 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8"/>
+    <title>view-个人博客</title>
+	<meta name="keywords" content="黑色模板,个人网站模板,个人博客模板,博客模板,css3,html5,网站模板" />
+	<meta name="description" content="这是一个有关黑色时间轴的css3 html5 网站模板" />
+	<link href="/assets/css/styles.css" rel="stylesheet">
+	<link href="/assets/css/view.css" rel="stylesheet">
+	<!-- 返回顶部调用 begin -->
+	<link href="/assets/css/lrtk.css" rel="stylesheet" />
+	<script type="text/javascript" src="/assets/js/jquery.js"></script>
+	<script type="text/javascript" src="/assets/js/js.js"></script>
+</head>
+  <body>
+	<header>
+		<nav id="nav">
+		  <ul>
+			<li><a href="/" >首页</a></li>
+			<li><a href="/news/" target="_blank" title="慢生活">慢生活</a></li>
+			<li><a href="/newstalk/" target="_blank" title="碎言碎语">碎言碎语</a></li>
+			<li><a href="/newstalk/" target="_blank" title="碎言碎语">关于</a></li>
+		  </ul>
+		  <script src="/assets/js/silder.js"></script><!--获取当前页导航 高亮显示标题--> 
+		</nav>
+	  </header>
+	  <!--header end-->
+<div id="mainbody">
+	<div class="blogs">
+		<ul class="bloglist">
+			{{range .post}}
+			<li>
+			  <div class="arrow_box">
+				<div class="ti"></div>
+				<!--三角形-->
+				<div class="ci"></div>
+				<!--圆形-->
+				<h2 class="title"><a href="/article/{{.ID}}" target="_blank">{{.Title}}</a></h2>
+				<ul class="textinfo">
+				  <a href="/article/{{.ID}}" target="_blank"><img src="/assets/images/{{.ImgFile}}"></a>
+				  <p> <a href="/article/{{.ID}}" target="_blank">{{.Summary}}</a></p>
+				</ul>
+				<ul class="details">
+					<li class="likes"><a href="#">{{.VistCnt}}</a></li>
+					<li class="comments"><a href="#">{{.CmtCnt}}</a></li>
+					<li class="icon-time"><a href="#">{{.Date}}</a></li>
+				</ul>
+			  </div>
+			  <!--arrow_box end--> 
+			</li>
+			{{end}}
+		  </ul>
+	  <!--bloglist end-->
+	  <aside>
+		<div class="search">
+		  <form class="searchform" method="get" action="#">
+			<input type="text" name="s" value="Search" onfocus="this.value=''" onblur="this.value='Search'">
+		  </form>
+		</div>
+		<div class="sunnav">
+			<ul>
+				{{range $i,$v := .items}}
+					{{if eq $i $.curitem}}
+					<li style="background: #E7A82B;"><a href="/items/{{$i}}" title="{{$v}}">{{$v}}</a></li>
+					{{else}}
+					<li><a href="/items/{{$i}}" title="{{$v}}">{{$v}}</a></li>
+					{{end}}
+				{{end}}
+			  </ul>
+		</div>
+		<div class="tuijian">
+			<h2>最新文章</h2>
+			<ol>
+			  {{range $i,$v := .newart}}
+			  <li><span><strong>{{add $i 1}}</strong></span><a href="/article/{{$v.ID}}">{{$v.Title}}</a></li>
+			  {{end}}
+			</ol>
+		</div>
+		<div class="clicks">
+		<h2>热门点击</h2>
+		<ol>
+			{{range $i,$v := .hotart}}
+			<li><span><a href="/">{{$v.Item}}</a></span><a href="/article/{{$v.ID}}">{{$v.Title}}</a></li>
+			{{end}}
+		</ol>
+		</div>
+	  </aside>
+	</div>
+	<!--blogs end--> 
+	<ul class="pagination">
+		{{- $lenth := dec (len .tabs) 1}}
+		{{range $i,$v := .tabs}}
+		  {{if eq $i 0}}
+		  <li><a href="/items/{{$.curitem}}/?page={{$v}}">«</a></li>
+		  {{else if eq $i $.curpage}}
+		  <li><a class="active" href="/items/{{$.curitem}}/?page={{$v}}">{{$v}}</a></li>
+		  {{else if eq $i $lenth}}
+		  <li><a href="/items/{{$.curitem}}/?page={{$v}}">»</a></li>
+		  {{else}}
+		  <li><a href="/items/{{$.curitem}}/?page={{$v}}">{{$v}}</a></li>
+		  {{end}}
+		{{end}}
+	</ul>
+  </div>
+  <!--mainbody end-->
+  {{template "footer" .}} 
+  <!-- 代码结束 -->
+  </body>
+</html>
