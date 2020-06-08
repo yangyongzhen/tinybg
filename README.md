@@ -32,6 +32,7 @@ Go语言爱好者周刊：第 45 期（https://mp.weixin.qq.com/s/7HBSRCeEmPMUsz
 而这种思路写博客就是在电脑上写好md格式的文章后往目录丢写好的md文件，一样达到同样的目的，唯一需要熟悉下mardown的写法和遵循一定的格式。且可以提前在电脑上写好md的文章，等想要发布时，一次发布多个文件也可以。
 
 软件架构 软件架构说明，参见个人博客：http://blog.csdn.net/yyz_1987
+最新维护地址：https://gitee.com/yyz116/tinybg
 
 安装教程 直接执行 go run main.go即可。 或者go bulid main.go 后，把可执行文件main跑起来即可。
 
